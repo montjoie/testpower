@@ -6,11 +6,13 @@ cd acme-utils/pyacmecapture
 apt -q -y install python python-libiio python-numpy python-colorama
 apt -q -y install iputils-ping
 JOBID=$(lava-group target | cut -d' ' -f1)
+rm -r dict
+rm -r dicti
 LAVAURI=http://10.2.3.2:10080/RPC2
 lavacli --uri $LAVAURI jobs show $JOBID >> dict
 grep 'device' dict | cut -d: -f2 >> dicti
 devicename=$(grep 'device ' dict | cut -d: -f2 >> dicti && cat dicti)
-lavacli devices dict get $devicename
+lavacli --uri http://10.2.3.2:10080/RPC2 devices dict get $devicename
 lava-send lava_start
 ./pyacmecapture.py --ip 10.65.34.1 -d 60 -s 8 -o boot_measurements -od .
 lava-sync clients
