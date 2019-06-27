@@ -11,7 +11,8 @@ lava-sync clients
 ./pyacmecapture.py --ip 10.65.34.1 -d 50 -s 8 -o test_measurements -od .
 JOBID=$(lava-group target | cut -d' ' -f1)
 LAVAURI=http://10.2.3.2:10080/RPC2
-lavacli --uri $LAVAURI jobs show $JOBID
+lavacli --uri $LAVAURI jobs show $JOBID >> dict
+cat dict
 cd ../..
 cat uuid
 y=$(cut -d _ -f1 uuid)
