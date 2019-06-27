@@ -5,18 +5,19 @@ apt -q -y install lavacli
 cd acme-utils/pyacmecapture
 apt -q -y install python python-libiio python-numpy python-colorama
 apt -q -y install iputils-ping
+JOBID=$(lava-group target | cut -d' ' -f1)
+LAVAURI=http://10.2.3.2:10080/RPC2
+lavacli --uri $LAVAURI jobs show $JOBID >> dict
+grep 'device' dict | cut -d: -f2 >> dicti
+devicename=$(grep 'device ' dict | cut -d: -f2 >> dicti && cat dicti)
+lavacli devices dict get $devicename
 lava-send lava_start
 ./pyacmecapture.py --ip 10.65.34.1 -d 60 -s 8 -o boot_measurements -od .
 lava-sync clients
 ./pyacmecapture.py --ip 10.65.34.1 -d 50 -s 8 -o test_measurements -od .
-JOBID=$(lava-group target | cut -d' ' -f1)
-LAVAURI=http://10.2.3.2:10080/RPC2
-lavacli --uri $LAVAURI jobs show $JOBID >> dict
-cat dict
 cd ../..
 cat uuid
 y=$(cut -d _ -f1 uuid)
-
 file1=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements-report.txt" http://10.2.3.2:8000/artifacts/output_files/)
 lava-test-reference curl_1 --result pass --reference $file1
 file2=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" http://10.2.3.2:8000/artifacts/output_files/)
