@@ -3,6 +3,10 @@ metadata:
   format: "Lava-Test-Shell Test Definition 1.0"
   description: "Montjoie test"
   version: 1.0
+install:
+    git-repos:
+    - https://github.com/ptitiano/acme-utils.git
+    - https://github.com/baylibre-acme/acme-cli.git
 run:
     steps:
       - echo "Power tests"
