@@ -6,6 +6,7 @@ cd acme-utils/pyacmecapture
 apt -q -y install python python-libiio python-numpy python-colorama
 apt -q -y install iputils-ping
 JOBID=$(lava-group target | cut -d' ' -f1)
+devicename=""
 LAVAURI=http://10.2.3.2:10080/RPC2
 lavacli --uri $LAVAURI jobs show $JOBID >> dict
 grep 'device' dict | cut -d: -f2 >> dicti
