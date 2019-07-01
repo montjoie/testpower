@@ -9,9 +9,11 @@ lava-group target >> jobsid
 cat jobsid
 LAVAURI=http://10.2.3.2:10080/RPC2
 devicesnb=$(wc -l jobsid | awk '{print $1}')
+echo $devicesnb
 for i in `seq 1 $devicesnb`;
 do
 JOBID=$(sed -n $i'p' jobsid)
+echo $JOBID
 devicename=""
 lavacli --uri $LAVAURI jobs show $JOBID >> dict
 devicename=$(grep 'device ' dict | cut -c15- >> dicti && cat dicti)
