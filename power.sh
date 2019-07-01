@@ -23,18 +23,15 @@ echo $probe_ip
 probe_channel=$(grep 'probe_channel' file | awk '{print $8}' | tr -d "'}]" | tr -d "'")
 echo $probe_channel
 lava-send lava_start
-./pyacmecapture.py --ip 10.65.34.1 -d 60 -s 8 -o boot_measurements -od .
+./pyacmecapture.py --ip $probe_ip -d 60 -s $probe_channel -o boot_measurements -od .
 lava-sync clients
-./pyacmecapture.py --ip 10.65.34.1 -d 50 -s 8 -o test_measurements -od .
-cd ../..
-cat uuid
-y=$(cut -d _ -f1 uuid)
-file1=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements-report.txt" http://10.2.3.2:8000/artifacts/output_files/)
+./pyacmecapture.py --ip $probe_ip -d 50 -s $probe_channel -o test_measurements -od .
+file1=$(curl -F "path=@/lava-$JOBID/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements-report.txt" http://10.2.3.2:8000/artifacts/output_files/)
 lava-test-reference file1 --result pass --reference $file1
-file2=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" http://10.2.3.2:8000/artifacts/output_files/)
+file2=$(curl -F "path=@/lava-$JOBID/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" http://10.2.3.2:8000/artifacts/output_files/)
 lava-test-reference file_2 --result pass --reference $file2
-file3=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements_Slot_$probe_channel.csv" http://10.2.3.2:8000/artifacts/output_files/)
+file3=$(curl -F "path=@/lava-$JOBID/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements_Slot_$probe_channel.csv" http://10.2.3.2:8000/artifacts/output_files/)
 lava-test-reference file3 --result pass --reference $file3
-file4=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_$probe_channel.csv" http://10.2.3.2:8000/artifacts/output_files/)
+file4=$(curl -F "path=@/lava-$JOBID/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_$probe_channel.csv" http://10.2.3.2:8000/artifacts/output_files/)
 lava-test-reference file4 --result pass --reference $file4	  
 done
