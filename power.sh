@@ -19,11 +19,13 @@ lavacli --uri $LAVAURI jobs show $JOBID >> dict
 devicename=$(grep 'device ' dict | cut -c15- >> dicti && cat dicti)
 lavacli --uri http://10.2.3.2:10080/RPC2 devices dict get $devicename >> file 
 probe_ip=$(grep 'probe_ip' file | awk '{print $6}' | tr -d "'" | tr -d ',')
+echo $probe_ip
 probe_channel=$(grep 'probe_channel' file | awk '{print $8}' | tr -d "'}]" | tr -d "'")
+echo $probe_channel
 lava-send lava_start
-./pyacmecapture.py --ip $probe_ip -d 60 -s $probe_channel -o boot_measurements_$devicename -od .
+./pyacmecapture.py --ip $probe_ip -d 60 -s $probe_channel -o boot_measurements -od .
 lava-sync clients
-./pyacmecapture.py --ip $probe_ip -d 50 -s $probe_channel -o test_measurements_$devicename -od .
+./pyacmecapture.py --ip $probe_ip -d 50 -s $probe_channel -o test_measurements -od .
 cd ../..
 cat uuid
 y=$(cut -d _ -f1 uuid)
