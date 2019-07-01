@@ -12,7 +12,7 @@ devicesnb=$(wc -l jobsid | awk '{print $1}')
 echo $devicesnb
 for i in `seq 1 $devicesnb`;
 do
-JOBID=$(sed -n $i'p' jobsid)
+JOBID=$(sed -n $i'p' jobsid | awk '{print $1'})
 echo $JOBID
 devicename=""
 lavacli --uri $LAVAURI jobs show $JOBID >> dict
