@@ -27,6 +27,9 @@ lava-send lava_start
 lava-sync clients
 ./pyacmecapture.py --ip $probe_ip -d 50 -s $probe_channel -o test_measurements -od .
 echo $JOBID 
+ls
+cd ../..
+ls
 file1=$(curl -F "path=@/lava-$JOBID/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements-report.txt" http://10.2.3.2:8000/artifacts/output_files/)
 lava-test-reference file1 --result pass --reference $file1
 file2=$(curl -F "path=@/lava-$JOBID/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" http://10.2.3.2:8000/artifacts/output_files/)
