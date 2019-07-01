@@ -5,7 +5,7 @@ apt -q -y install lavacli
 cd acme-utils/pyacmecapture
 apt -q -y install python python-libiio python-numpy python-colorama
 apt -q -y install iputils-ping
-lava-group target >> jobsid
+lava-group >> jobsid
 cat jobsid
 LAVAURI=http://10.2.3.2:10080/RPC2
 devicesnb=$(wc -l jobsid | awk '{print $1}')
@@ -21,9 +21,9 @@ lavacli --uri http://10.2.3.2:10080/RPC2 devices dict get $devicename >> file
 probe_ip=$(grep 'probe_ip' file | awk '{print $6}' | tr -d "'" | tr -d ',')
 probe_channel=$(grep 'probe_channel' file | awk '{print $8}' | tr -d "'}]" | tr -d "'")
 lava-send lava_start
-./pyacmecapture.py --ip $probe_ip -d 60 -s $probe_channel -o boot_measurements -od .
+./pyacmecapture.py --ip $probe_ip -d 60 -s $probe_channel -o boot_measurements_$devicename -od .
 lava-sync clients
-./pyacmecapture.py --ip $probe_ip -d 50 -s $probe_channel -o test_measurements -od .
+./pyacmecapture.py --ip $probe_ip -d 50 -s $probe_channel -o test_measurements_$devicename -od .
 cd ../..
 cat uuid
 y=$(cut -d _ -f1 uuid)
