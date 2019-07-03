@@ -24,13 +24,13 @@ do
 	probe_ip=$(grep 'probe_ip' file | awk '{print $6}' | tr -d "'" | tr -d ',')
 	if [ -z $probe_ip ] 
 	then
-		echo ("probe_ip unfound")
+		echo "probe_ip unfound"
         	exit 1
 	fi
 	probe_channel=$(grep 'probe_channel' file | awk '{print $8}' | tr -d "'}]" | tr -d "'")
 	if [ -z $probe_channel ]
 	then
-		echo ("probe_channel unfound")
+		echo "probe_channel unfound"
         	exit 1
 	fi
 
