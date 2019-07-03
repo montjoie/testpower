@@ -27,13 +27,14 @@ do
 		echo "probe_ip unfound"
         	exit 1
 	fi
+	echo $probe_ip
 	probe_channel=$(grep 'probe_channel' file | awk '{print $8}' | tr -d "'}]" | tr -d "'")
 	if [ -z $probe_channel ]
 	then
 		echo "probe_channel unfound"
         	exit 1
 	fi
-
+        echo $probe_channel
 	lava-send lava_start
 	./pyacmecapture.py --ip $probe_ip -d 60 -s $probe_channel -o boot_measurements -od . || exit $?
 	lava-sync clients
