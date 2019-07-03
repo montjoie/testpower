@@ -2,6 +2,8 @@
 
 ARTI=$1
 
+export
+
 apt -q -y install libxml2 libxml2-dev bison flex libcdk5-dev libavahi-client-dev cmake git || exit $?
 apt -q -y install lavacli || exit $?
 cd acme-utils/pyacmecapture  || exit $?
