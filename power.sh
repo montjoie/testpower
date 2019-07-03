@@ -18,12 +18,12 @@ lavacli --uri $LAVAURI jobs show $JOBID >> dict
 devicename=$(grep 'device ' dict | cut -d: -f2)
 lavacli --uri $LAVAURI devices dict get $devicename >> file 
 probe_ip=$(grep 'probe_ip' file | awk '{print $6}' | tr -d "'" | tr -d ',')
-if [-z "$probe_ip"]
+if [ -z $probe_ip ] 
 then
 	exit
 fi
 probe_channel=$(grep 'probe_channel' file | awk '{print $8}' | tr -d "'}]" | tr -d "'")
-if [-z "$probe_channel"]
+if [ -z $probe_channel ]
 then
         exit
 fi
