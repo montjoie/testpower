@@ -8,9 +8,7 @@ apt -q -y install iputils-ping || exit $?
 lava-group >> jobsid || exit $?
 LAVAURI=http://10.2.3.2:10080/RPC2
 echo $LAVAURI >> uri
-cat uri
-DISPATCHER_IP= $(cut -d: -f2 uri | tr -d "//")
-echo ("DISPATCHER_IP", $DISPATCHER_IP)
+DISPATCHER_IP=$(cut -d: -f2 uri | tr -d "//")
 devicesnb=$(wc -l jobsid | awk '{print $1}')
 echo $devicesnb
 for i in `seq 1 $devicesnb`;
