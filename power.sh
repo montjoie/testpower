@@ -7,7 +7,8 @@ apt -q -y install python python-libiio python-numpy python-colorama || exit $?
 apt -q -y install iputils-ping || exit $?
 lava-group >> jobsid || exit $?
 LAVAURI=http://10.2.3.2:10080/RPC2 >> uri
-DISPATCHER_IP= $(cut -d: f2 uri | tr -d "//")
+DISPATCHER_IP= $(cut -d: -f2 uri | tr -d "//")
+echo $DISPATCHER_IP
 devicesnb=$(wc -l jobsid | awk '{print $1}')
 echo $devicesnb
 for i in `seq 1 $devicesnb`;
