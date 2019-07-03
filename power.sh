@@ -6,7 +6,8 @@ cd acme-utils/pyacmecapture  || exit $?
 apt -q -y install python python-libiio python-numpy python-colorama || exit $?
 apt -q -y install iputils-ping || exit $?
 lava-group >> jobsid || exit $?
-LAVAURI=http://10.2.3.2:10080/RPC2
+LAVAURI=http://10.2.3.2:10080/RPC2 >> uri
+DISPATCHER_IP= $(cut -d: f2 uri | tr -d "//")
 devicesnb=$(wc -l jobsid | awk '{print $1}')
 echo $devicesnb
 for i in `seq 1 $devicesnb`;
@@ -35,12 +36,12 @@ lava-sync clients
 cd ../..
 cat uuid
 y=$(cut -d _ -f1 uuid)
-file1=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements-report.txt" http://10.2.3.2:8000/artifacts/output_files/ || exit $?)
+file1=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements-report.txt" http://$DISPATCHER_IP:8000/artifacts/output_files/ || exit $?)
 lava-test-reference file1 --result pass --reference $file1
-file2=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" http://10.2.3.2:8000/artifacts/output_files/ || exit $?)
+file2=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" http://$DISPATCHER_IP:8000/artifacts/output_files/ || exit $?)
 lava-test-reference file_2 --result pass --reference $file2
-file3=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements_Slot_$probe_channel.csv" http://10.2.3.2:8000/artifacts/output_files/ || exit $?)
+file3=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements_Slot_$probe_channel.csv" http://$DISPATCHER_IP:8000/artifacts/output_files/ || exit $?)
 lava-test-reference file3 --result pass --reference $file3
-file4=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_$probe_channel.csv" http://10.2.3.2:8000/artifacts/output_files/ || exit $?) 
+file4=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_$probe_channel.csv" http://$DISPATCHER_IP:8000/artifacts/output_files/ || exit $?) 
 lava-test-reference file4 --result pass --reference $file4	  
 done
