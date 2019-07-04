@@ -1,10 +1,10 @@
 #!/bin/sh 
 
-lava-test-case install_libiio apt -q -y install libxml2 libxml2-dev bison flex libcdk5-dev libavahi-client-dev cmake git || exit $?
-lava-test-case install_lavacli apt -q -y install lavacli || exit $?
+apt -q -y install libxml2 libxml2-dev bison flex libcdk5-dev libavahi-client-dev cmake git || exit $?
+apt -q -y install lavacli || exit $?
 cd acme-utils/pyacmecapture  || exit $?
-lava-test-case install_modules apt -q -y install python python-libiio python-numpy python-colorama || exit $?
-lava-test-case install_ping apt -q -y install iputils-ping || exit $?
+apt -q -y install python python-libiio python-numpy python-colorama || exit $?
+apt -q -y install iputils-ping || exit $?
 lava-group >> jobsid || exit $?
 #devices number in the group role 
 devicesnb=$(wc -l jobsid | awk '{print $1}')
