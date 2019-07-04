@@ -11,4 +11,7 @@ run:
     steps:
       - echo "Power tests"
       - chmod +x ./power.sh
-      - ./power.sh
+      - ./power.sh $ARTI
+
+params:
+  ARTI: "http://10.2.3.2:8000/artifacts/output_files/"
