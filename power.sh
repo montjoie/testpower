@@ -34,7 +34,7 @@ do
         echo $probe_channel
 	
 	lava-sync client_ready
-	lava-test-case measurement --shell ./pyacmecapture.py --ip $probe_ip -d 50 -s $probe_channel -o test_measurements -od . || exit $?
+	./pyacmecapture.py --ip $probe_ip -d 50 -s $probe_channel -o test_measurements -od . || exit $?
 	cd ../.. || exit $?
 	cat uuid
 	y=$(cut -d _ -f1 uuid)
