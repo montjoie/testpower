@@ -32,19 +32,14 @@ do
         	exit 1
 	fi
         echo $probe_channel
-	lava-send lava_start
-	./pyacmecapture.py --ip $probe_ip -d 60 -s $probe_channel -o boot_measurements -od . || exit $?
+	
 	lava-sync clients
 	./pyacmecapture.py --ip $probe_ip -d 50 -s $probe_channel -o test_measurements -od . || exit $?
 	cd ../.. || exit $?
 	cat uuid
 	y=$(cut -d _ -f1 uuid)
-	file1=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements-report.txt" $ARTIFACTORIAL || exit $?)
-	lava-test-reference file1 --result pass --reference $file1
-	file2=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTIFACTORIAL || exit $?)
-	lava-test-reference file_2 --result pass --reference $file2
-	file3=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements_Slot_$probe_channel.csv" $ARTIFACTORIAL || exit $?)
-	lava-test-reference file3 --result pass --reference $file3
-	file4=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_$probe_channel.csv" $ARTIFACTORIAL || exit $?) 
-	lava-test-reference file4 --result pass --reference $file4	  
+	RAW_DATA=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_$probe_channel.csv" $ARTIFACTORIAL || exit $?)
+	lava-test-reference RAW_DATA --result pass --reference $RAW_DATA
+	ACME_SUMMARY=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTIFACTORIAL || exit $?) 
+	lava-test-reference ACME_SUMMARY --result pass --reference $ACME_SUMMARY	  
 done
