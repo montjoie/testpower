@@ -40,7 +40,7 @@ do
 	y=$(cut -d _ -f1 uuid)
 	echo "ARTI"
 	echo $ARTI
-	ls
+	ls lava-$y/0/tests/0_server/acme-utils/pyacmecapture/
 	file1=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_$probe_channel.csv" http://10.2.3.2:8000/artifacts/output_files/ || exit $?)
 	lava-test-reference RAW_DATA --result pass --reference $file1
 	file2=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTI || exit $?) 
