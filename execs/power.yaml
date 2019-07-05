@@ -10,8 +10,8 @@ install:
 run:
     steps:
       - echo "Power tests"
-      - chmod +x ./power.sh
+      - chmod +x ./power.sh $ARTI
       - ./power.sh
-    params: 
-      ARTI: "http://10.2.3.2:8000/artifacts/output_files/"
+    
+    
 
