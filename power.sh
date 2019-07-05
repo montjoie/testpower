@@ -40,8 +40,8 @@ do
 	cd ../.. || exit $?
 	cat uuid
 	y=$(cut -d _ -f1 uuid)
-	file1=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_$probe_channel.csv" $ARTIFACTORIAL || exit $?)
+	file1=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_$probe_channel.csv" $ARTI || exit $?)
 	lava-test-reference RAW_DATA --result pass --reference $file1
-	file2=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTIFACTORIAL || exit $?) 
+	file2=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTI || exit $?) 
 	lava-test-reference ACME_SUMMARY --result pass --reference $file2	  
 done
