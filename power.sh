@@ -1,5 +1,5 @@
 #!/bin/sh 
-ARTI=$1
+
 apt -q -y install libxml2 libxml2-dev bison flex libcdk5-dev libavahi-client-dev cmake git || exit $?
 apt -q -y install lavacli || exit $?
 cd acme-utils/pyacmecapture  || exit $?
@@ -38,8 +38,8 @@ do
 	cd ../.. || exit $?
 	cat uuid
 	y=$(cut -d _ -f1 uuid)
-        file2=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTI)
+        file2=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" http://10.2.3.2:8000/artifacts/output_files/)
         lava-test-reference curl_2 --result pass --reference $file2
-        file4=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_8.csv" $ARTI)
+        file4=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_8.csv" http://10.2.3.2:8000/artifacts/output_files/)
         lava-test-reference curl_4 --result pass --reference $file4	  
 done
