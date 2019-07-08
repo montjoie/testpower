@@ -12,20 +12,20 @@ echo "devices number"
 echo $devicesnb
 for i in `seq 1 $devicesnb`;
 do
-	JOBID=$(sed -n $i'p' jobsid | awk '{print $1'})
+	JOBID=$(sed -n $i'p' jobsid | awk '{print $1'}) #recuperate the job id of the target
 	echo $JOBID	
 	devicename=""
-	lavacli --uri $LAVA_URI jobs show $JOBID >> dict
-	devicename=$(grep 'device ' dict | cut -d: -f2)
-	lavacli --uri $LAVA_URI devices dict get $devicename >> file 
-	probe_ip=$(grep 'probe_ip' file | awk '{print $6}' | tr -d "'" | tr -d ',')
+	lavacli --uri $LAVA_URI jobs show $JOBID >> dict #use lavacli tool to know the devicename
+	devicename=$(grep 'device ' dict | cut -d: -f2) #recuperate the device name
+	lavacli --uri $LAVA_URI devices dict get $devicename >> file #recuperate the device dict of our board using the devicename
+	probe_ip=$(grep 'probe_ip' file | awk '{print $6}' | tr -d "'" | tr -d ',')#recuperate probe ip from device dict
 	if [ -z $probe_ip ] 
 	then
 		echo "probe_ip unfound"
         	exit 1
 	fi
 	echo $probe_ip
-	probe_channel=$(grep 'probe_channel' file | awk '{print $8}' | tr -d "'}]" | tr -d "'")
+	probe_channel=$(grep 'probe_channel' file | awk '{print $8}' | tr -d "'}]" | tr -d "'") #recuperate probe channel from device dict
 	if [ -z $probe_channel ]
 	then
 		echo "probe_channel unfound"
@@ -33,15 +33,15 @@ do
 	fi
         echo $probe_channel
 	
-	lava-sync client_ready
+	lava-sync client_ready # synchronise with the host
 	./pyacmecapture.py --ip $probe_ip -d 50 -s $probe_channel -o test_measurements -od . || exit $?
 	cd ../.. || exit $?
 	cat uuid
-	y=$(cut -d _ -f1 uuid)
+	y=$(cut -d _ -f1 uuid) #recuperate the job id of the host
 	cd acme-utils/pyacmecapture
 	ls
-        file2=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTI)
-        lava-test-reference curl_2 --result pass --reference $file2
-        file4=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_8.csv" $ARTI)
-        lava-test-reference curl_4 --result pass --reference $file4	  
+        ACME_SUMMARY=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTI)
+        lava-test-reference file1 --result pass --reference $ACME_SUMMARY
+        RAW_DATA=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_8.csv" $ARTI)
+        lava-test-reference file2 --result pass --reference $RAW_DATA	  
 done
