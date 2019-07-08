@@ -40,8 +40,8 @@ do
 	y=$(cut -d _ -f1 uuid)
 	cd acme-utils/pyacmecapture
 	ls
-        file2=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" http://10.2.3.2:8000/artifacts/output_files/)
+        file2=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTI)
         lava-test-reference curl_2 --result pass --reference $file2
-        file4=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_8.csv" http://10.2.3.2:8000/artifacts/output_files/)
+        file4=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_8.csv" $ARTI)
         lava-test-reference curl_4 --result pass --reference $file4	  
 done
