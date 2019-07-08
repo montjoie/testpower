@@ -41,7 +41,7 @@ do
 	cd acme-utils/pyacmecapture
 	ls
         ACME_SUMMARY=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTI)
-        lava-test-reference file1 --result pass --reference $ACME_SUMMARY
+        lava-test-reference ACME_SUMMARY --result pass --reference $ACME_SUMMARY
         RAW_DATA=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_8.csv" $ARTI)
-        lava-test-reference file2 --result pass --reference $RAW_DATA	  
+        lava-test-reference RAW_DATA --result pass --reference $RAW_DATA	  
 done
