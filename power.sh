@@ -18,7 +18,7 @@ do
 	lavacli --uri $LAVA_URI jobs show $JOBID >> dict #use lavacli tool to know the devicename
 	devicename=$(grep 'device ' dict | cut -d: -f2) #recuperate the device name
 	lavacli --uri $LAVA_URI devices dict get $devicename >> file #recuperate the device dict of our board using the devicename
-	probe_ip=$(grep 'probe_ip' file | awk '{print $6}' | tr -d "'" | tr -d ',')#recuperate probe ip from device dict
+	probe_ip=$(grep 'probe_ip' file | awk '{print $6}' | tr -d "'" | tr -d ',') #recuperate probe ip from device dict
 	if [ -z $probe_ip ] 
 	then
 		echo "probe_ip unfound"
