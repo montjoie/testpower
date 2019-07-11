@@ -34,7 +34,7 @@ do
         echo $probe_channel
 	
 	lava-sync target_ready # synchronise with the host
-	./pyacmecapture.py --ip $probe_ip -s $probe_channel -q -o test_measurements -od . & pid=$  || exit $? #begin measurement in background
+	./pyacmecapture.py --ip $probe_ip -s $probe_channel -q -o test_measurements -od . & pid=$!  || exit $? #begin measurement in background
         lava-sync target_finished # waiting for the target to complete its test section
         kill $pid #stop the measurement
 	cd ../.. || exit $?
