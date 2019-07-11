@@ -8,8 +8,6 @@ apt -q -y install iputils-ping || exit $?
 lava-group >> jobsid || exit $?
 #devices number in the group role 
 devicesnb=$(wc -l jobsid | awk '{print $1}')
-echo "devices number"
-echo $devicesnb
 for i in `seq 1 $devicesnb`;
 do
 	JOBID=$(sed -n $i'p' jobsid | awk '{print $1'}) #recuperate the job id of the target
@@ -24,15 +22,12 @@ do
 		echo "probe_ip unfound"
         	exit 1
 	fi
-	echo $probe_ip
 	probe_channel=$(grep 'probe_channel' file | awk '{print $8}' | tr -d "'}]" | tr -d "'") #recuperate probe channel from device dict
 	if [ -z $probe_channel ]
 	then
 		echo "probe_channel unfound"
         	exit 1
 	fi
-        echo $probe_channel
-	
 	lava-sync target_ready # synchronise with the host
 	./pyacmecapture.py --ip $probe_ip -s $probe_channel -q -o test_measurements -od . & pid=$!  || exit $? #begin measurement in background
         lava-sync target_finished # waiting for the target to complete its test section
@@ -41,7 +36,6 @@ do
 	cat uuid
 	y=$(cut -d _ -f1 uuid) #recuperate the job id of the host
 	cd acme-utils/pyacmecapture
-	ls
         ACME_SUMMARY=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTI)
         lava-test-reference ACME_SUMMARY --result pass --reference $ACME_SUMMARY
         RAW_DATA=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_8.csv" $ARTI)
