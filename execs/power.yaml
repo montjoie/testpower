@@ -11,7 +11,7 @@ run:
     steps:
       - echo "Power tests"
       - chmod +x ./power-boot-test.sh  
-      - ./power.sh
+      - ./power-boot-test.sh
     
       
     
