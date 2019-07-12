@@ -45,10 +45,10 @@ do
 	cat uuid
 	y=$(cut -d _ -f1 uuid) #recuperate the job id of the host
 	cd acme-utils/pyacmecapture
-	ls
-        BOOT_ACME_SUMMARY=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTI)
+	
+        BOOT_ACME_SUMMARY=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements-report.txt" $ARTI)
         lava-test-reference BOOT_ACME_SUMMARY --result pass --reference $BOOT_ACME_SUMMARY
-        BOOT_RAW_DATA=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_8.csv" $ARTI)
+        BOOT_RAW_DATA=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/boot_measurements_Slot_8.csv" $ARTI)
         lava-test-reference BOOT_RAW_DATA --result pass --reference $BOOT_RAW_DATA
         TEST_ACME_SUMMARY=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTI)
         lava-test-reference TEST_ACME_SUMMARY --result pass --reference $TEST_ACME_SUMMARY
