@@ -38,8 +38,8 @@ do
 	echo $y
 	cd acme-utils/pyacmecapture || exit $?
 	ls
-	cat test_measurements-report.txt
-	head -5 test_measurements_Slot_8.csv
+	cat lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt
+	head -5 lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_8.csv
 	if [ -s test_measurements-report.txt ]
 	then
         ACME_SUMMARY=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTI) 
