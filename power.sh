@@ -37,21 +37,9 @@ do
 	y=$(cut -d _ -f1 uuid) #recuperate the job id of the host
 	echo $y
 	cd acme-utils/pyacmecapture || exit $?
-	ls
-	cat lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt
-	head -5 lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_8.csv
-	if [ -s test_measurements-report.txt ]
 	then
         ACME_SUMMARY=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements-report.txt" $ARTI) 
         lava-test-reference ACME_SUMMARY --result pass --reference $ACME_SUMMARY
-        else
-		echo " file empty"
-	fi
-	if [ -s test_measurements_Slot_8.csv ]
-	then
         RAW_DATA=$(curl -F "path=@/lava-$y/0/tests/0_server/acme-utils/pyacmecapture/test_measurements_Slot_8.csv" $ARTI)
-        lava-test-reference RAW_DATA --result pass --reference $RAW_DATA
-        else
-                echo " file empty"
-        fi	  
+        lava-test-reference RAW_DATA --result pass --reference $RAW_DATA  
 done
