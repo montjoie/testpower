@@ -10,8 +10,8 @@ install:
 run:
     steps:
       - echo "Power tests"
-      - chmod +x ./power.sh  
-      - ./power.sh
+      - chmod +x ./power-boot-test.sh  
+      - ./power-boot-test.sh
     
       
     
