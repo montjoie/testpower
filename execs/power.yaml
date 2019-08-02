@@ -5,7 +5,7 @@ metadata:
   version: 1.0
 install:
     git-repos:
-    - https://github.com/touilkhouloud/acme-utils.git
+    - https://github.com/EmnaTrabelsi/acme-utils.git
     - https://github.com/baylibre-acme/acme-cli.git
 run:
     steps:
